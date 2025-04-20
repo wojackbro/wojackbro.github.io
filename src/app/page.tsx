@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useInView } from 'framer-motion';
+import { motion, useScroll, useInView } from 'framer-motion';
 import TabNavigation from './components/TabNavigation';
 import Footer from './components/Footer';
 import { profileData } from './data/profile';
@@ -83,8 +83,6 @@ export default function Home() {
   const isProjectsInView = useInView(projectsRef, { once: false, amount: 0.2 });
   const isSkillsInView = useInView(skillsRef, { once: false, amount: 0.2 });
   const isAboutInView = useInView(aboutRef, { once: false, amount: 0.2 });
-
-  const { scrollYProgress } = useScroll();
 
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-between overflow-hidden bg-gray-50 dark:bg-gray-900">
