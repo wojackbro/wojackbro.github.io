@@ -9,8 +9,8 @@ export async function generateStaticParams() {
   }));
 }
 
-// This is now a Server Component - Use inline type for props
-export default function ProjectPage({ params }: { params: { projectId: string } }) {
+// This is now a Server Component - Use 'any' for props as a workaround for type error
+export default function ProjectPage({ params }: any) {
   const projectId = params.projectId;
 
   // Fetch project data on the server based on projectId
