@@ -220,7 +220,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-1">Location</h3>
-                      <p className="text-gray-600 dark:text-gray-400">L'Aquila, Italy</p>
+                      <p className="text-gray-600 dark:text-gray-400">LAquila, Italy</p>
                     </div>
                   </div>
                   

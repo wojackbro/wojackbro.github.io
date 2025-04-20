@@ -229,7 +229,7 @@ export default function Home() {
                 </div>
                 <div className="flex items-center">
                   <span className="text-blue-600 font-semibold w-20">Location:</span>
-                  <span className="text-gray-700 dark:text-gray-300">L'Aquila, Italy</span>
+                  <span className="text-gray-700 dark:text-gray-300">LAquila, Italy</span>
                 </div>
                 <div className="flex items-center">
                   <span className="text-blue-600 font-semibold w-20">Education:</span>
