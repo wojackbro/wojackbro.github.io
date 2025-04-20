@@ -10,6 +10,7 @@ export async function generateStaticParams() {
 }
 
 // This is now a Server Component - Use 'any' for props as a workaround for type error
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function ProjectPage({ params }: any) {
   const projectId = params.projectId;
 
