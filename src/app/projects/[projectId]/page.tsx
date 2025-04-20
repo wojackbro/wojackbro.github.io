@@ -9,14 +9,8 @@ export async function generateStaticParams() {
   }));
 }
 
-interface PageProps {
-  params: {
-    projectId: string;
-  };
-}
-
-// This is now a Server Component
-export default function ProjectPage({ params }: PageProps) {
+// This is now a Server Component - Use inline type for props
+export default function ProjectPage({ params }: { params: { projectId: string } }) {
   const projectId = params.projectId;
 
   // Fetch project data on the server based on projectId
