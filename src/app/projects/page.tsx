@@ -1,11 +1,11 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import Image from 'next/image';
+import { useState } from 'react';
 import Link from 'next/link';
 import TabNavigation from '../components/TabNavigation';
 import Footer from '../components/Footer';
 import { profileData } from '../data/profile';
+import { motion } from 'framer-motion';
 
 const ProjectImagePlaceholder = ({ title }: { title: string }) => {
   const hash = title.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);

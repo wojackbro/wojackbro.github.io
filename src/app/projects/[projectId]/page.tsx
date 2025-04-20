@@ -1,12 +1,12 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, notFound } from 'next/navigation';
 import TabNavigation from '../../components/TabNavigation';
 import Footer from '../../components/Footer';
 import { profileData } from '../../data/profile';
+import { FaGithub, FaExternalLinkAlt, FaArrowLeft } from 'react-icons/fa';
 
 // Placeholder component for projects that don't have images
 const ProjectImagePlaceholder = ({ title }: { title: string }) => {

@@ -3,13 +3,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import TabNavigation from './components/TabNavigation';
 import Footer from './components/Footer';
 import { profileData } from './data/profile';
 import { FaReact, FaNodeJs, FaPython, FaJava, FaDatabase, FaServer, FaCloud, FaMobile, FaGithub, FaLinkedin, FaGlobe } from 'react-icons/fa';
 import { SiTypescript, SiJavascript, SiDocker, SiKubernetes } from 'react-icons/si';
-import Hero from './components/Hero';
 
 interface ProjectCard {
   title: string;

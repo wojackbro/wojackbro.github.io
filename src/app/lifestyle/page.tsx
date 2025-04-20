@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Footer from '../components/Footer';
 import { profileData } from '../data/profile';
-import Image from 'next/image';
+import { FaGamepad, FaMusic, FaBookOpen, FaPlaneDeparture, FaUsers } from 'react-icons/fa';
 
 export default function LifestylePage() {
   return (
@@ -23,9 +23,14 @@ export default function LifestylePage() {
             className="text-center max-w-3xl mx-auto"
           >
             <h1 className="text-5xl font-bold mb-6">Lifestyle</h1>
-            <p className="text-xl text-blue-200">
-              Beyond work and academics - explore my personal interests and activities.
-            </p>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+              className="mt-4 max-w-xl text-lg text-gray-600 dark:text-gray-400"
+            >
+              Beyond the screen, I find joy in exploring diverse interests that enrich my life. It&apos;s all about balance and continuous learning, both in and out of the tech world.
+            </motion.p>
           </motion.div>
         </div>
       </section>

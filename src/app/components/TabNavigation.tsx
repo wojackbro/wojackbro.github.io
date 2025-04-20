@@ -3,8 +3,6 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { profileData } from '../data/profile';
-import { Project } from '../types/profile';
 
 interface MenuItem {
   title: string;
@@ -12,11 +10,6 @@ interface MenuItem {
   icon: React.ReactNode;
   subMenus?: MenuItem[];
 }
-
-// Helper function to generate slugs
-const generateSlug = (title: string): string => {
-  return title.toLowerCase().replace(/\s+/g, '-');
-};
 
 export default function TabNavigation() {
   const [activeTab, setActiveTab] = useState('/');

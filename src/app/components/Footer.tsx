@@ -190,8 +190,8 @@ export default function Footer({ profile }: FooterProps) {
           variants={itemVariants}
           className="pt-8 border-t border-gray-800 text-center"
         >
-          <p className="text-gray-400 text-sm">
-            &copy; {currentYear} {profile.name}. All rights reserved.
+          <p className="text-sm text-gray-400 mt-4 md:mt-0">
+            &copy; {new Date().getFullYear()} Abid Hossain. All rights reserved. Made with ❤️ and fueled by coffee. Don&apos;t steal my stuff!
           </p>
           <p className="text-gray-500 text-xs mt-2">
             Designed with 💙 using Next.js, Tailwind CSS, and Framer Motion

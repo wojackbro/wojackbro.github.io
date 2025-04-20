@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import { GeistSans } from 'geist/font';
 import { GeistMono } from 'geist/font/mono';
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import Navigation from './components/Navigation';
+import Footer from './components/Footer';
+import { ThemeProvider } from 'next-themes';
+import CustomCursor from './components/CustomCursor';
 
 export const metadata: Metadata = {
   title: "Abid Hossain | Portfolio",
