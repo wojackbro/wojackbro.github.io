@@ -59,6 +59,10 @@ jobs:
         # For user/org pages (like username.github.io), you MUST add `with: static_site_generator: next`
         with:
            static_site_generator: next
+      - name: Clean install cache
+        run: ${{ steps.detect-package-manager.outputs.manager }} cache clean --force
+      - name: Remove .next directory
+        run: rm -rf .next
       - name: Restore cache
         uses: actions/cache@v4
         with:
