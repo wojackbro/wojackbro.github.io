@@ -102,7 +102,7 @@ export default function Footer({ profile }: FooterProps) {
                 <span className="inline-block w-8 h-8 rounded-full bg-blue-900/50 flex items-center justify-center mr-3">
                   <FaMapMarkerAlt className="w-4 h-4" />
                 </span>
-                <span>L'Aquila, Italy</span>
+                <span>LAquila, Italy</span>
               </div>
             </div>
           </motion.div>

@@ -20,7 +20,7 @@ export default function Hero({ profile }: HeroProps) {
           transition={{ duration: 0.8 }}
         >
           <h1 className="text-4xl sm:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-            Hi, I'm <span className="text-blue-600 dark:text-blue-400">{profile.name}</span>
+            Hi, I am <span className="text-blue-600 dark:text-blue-400">{profile.name}</span>
           </h1>
           <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-300 mb-8">
             {profile.title}

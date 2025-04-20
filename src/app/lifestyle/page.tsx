@@ -53,7 +53,7 @@ export default function LifestylePage() {
               <div className="p-6">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Social Media</h2>
                 <p className="text-gray-600 dark:text-gray-400 mb-6">
-                  Connect with me across various social media platforms and see what I'm up to in my everyday life.
+                  Connect with me across various social media platforms and see what I am up to in my everyday life.
                 </p>
                 <Link href="/lifestyle/social">
                   <div className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-300">
