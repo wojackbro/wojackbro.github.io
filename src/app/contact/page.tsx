@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import TabNavigation from '../components/TabNavigation';
 import Footer from '../components/Footer';
 import { profileData } from '../data/profile';
-import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaGithub, FaLinkedin, FaSpinner, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
+import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaGithub, FaLinkedin, FaSpinner } from 'react-icons/fa';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -165,6 +165,16 @@ export default function ContactPage() {
                       )}
                     </motion.button>
                   </div>
+                  {submitStatus === 'success' && (
+                    <p className="mt-4 text-center text-green-600 flex items-center justify-center">
+                      {/* <FaCheckCircle className="mr-2" /> */ } Message sent successfully! I&apos;ll be in touch soon.
+                    </p>
+                  )}
+                  {submitStatus === 'error' && (
+                    <p className="mt-4 text-center text-red-600 flex items-center justify-center">
+                      {/* <FaExclamationCircle className="mr-2" /> */ } Error sending message. Please try again.
+                    </p>
+                  )}
                 </form>
               </div>
             </motion.div>

@@ -5,8 +5,6 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Footer from '../components/Footer';
 import { profileData } from '../data/profile';
-import { FaFilePdf, FaExternalLinkAlt, FaQuoteLeft } from 'react-icons/fa';
-import { SiGooglescholar } from 'react-icons/si';
 
 export default function PublicationsPage() {
   const publications = profileData.publications;

@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Footer from '../components/Footer';
 import { profileData } from '../data/profile';
-import { FaGamepad, FaMusic, FaBookOpen, FaPlaneDeparture, FaUsers } from 'react-icons/fa';
 
 export default function LifestylePage() {
   return (

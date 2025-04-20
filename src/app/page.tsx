@@ -10,14 +10,6 @@ import { profileData } from './data/profile';
 import { FaReact, FaNodeJs, FaPython, FaJava, FaDatabase, FaServer, FaCloud, FaMobile, FaGithub, FaLinkedin, FaGlobe } from 'react-icons/fa';
 import { SiTypescript, SiJavascript, SiDocker, SiKubernetes } from 'react-icons/si';
 
-interface ProjectCard {
-  title: string;
-  description: string;
-  tags: string[];
-  image: string;
-  link: string;
-}
-
 // Function to get the appropriate icon for a skill
 const getSkillIcon = (skill: string) => {
   switch (skill.toLowerCase()) {
@@ -69,9 +61,6 @@ const ProjectImagePlaceholder = ({ title }: { title: string }) => {
   );
 };
 
-// Adjust the coder background image to display the full picture
-const coderBackgroundImage = '/images/1.png';
-
 export default function Home() {
   // Add some placeholder skills if profileData.skills is empty or undefined
   const skills = profileData.skills?.length > 0 ? profileData.skills : 
@@ -91,14 +80,11 @@ export default function Home() {
   const skillsRef = useRef(null);
   const aboutRef = useRef(null);
 
-  const isHeroInView = useInView(heroRef, { once: false, amount: 0.3 });
   const isProjectsInView = useInView(projectsRef, { once: false, amount: 0.2 });
   const isSkillsInView = useInView(skillsRef, { once: false, amount: 0.2 });
   const isAboutInView = useInView(aboutRef, { once: false, amount: 0.2 });
 
   const { scrollYProgress } = useScroll();
-  const heroY = useTransform(scrollYProgress, [0, 0.2], [0, -100]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0.3]);
 
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-between overflow-hidden bg-gray-50 dark:bg-gray-900">

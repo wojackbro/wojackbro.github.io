@@ -11,8 +11,6 @@ interface FooterProps {
 }
 
 export default function Footer({ profile }: FooterProps) {
-  const currentYear = new Date().getFullYear();
-  
   const footerVariants = {
     hidden: { 
       opacity: 0,
