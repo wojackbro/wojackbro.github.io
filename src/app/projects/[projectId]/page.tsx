@@ -7,6 +7,13 @@ import TabNavigation from '../../components/TabNavigation';
 import Footer from '../../components/Footer';
 import { profileData } from '../../data/profile';
 
+// Generate static paths for each project
+export async function generateStaticParams() {
+  return profileData.projects.map((project) => ({
+    projectId: project.title.toLowerCase().replace(/\s+/g, '-'),
+  }));
+}
+
 // Placeholder component for projects that don't have images
 const ProjectImagePlaceholder = ({ title }: { title: string }) => {
   const hash = title.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
