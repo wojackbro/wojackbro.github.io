@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useRef } from 'react';
-import { motion, useScroll, useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import TabNavigation from './components/TabNavigation';
 import Footer from './components/Footer';
 import { profileData } from './data/profile';

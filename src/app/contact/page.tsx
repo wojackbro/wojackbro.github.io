@@ -87,7 +87,7 @@ export default function ContactPage() {
                 
                 {submitStatus === 'success' && (
                   <div className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 p-4 rounded-lg mb-6">
-                    Thank you for your message! I'll get back to you as soon as possible.
+                    Thank you for your message! I&apos;ll get back to you as soon as possible.
                   </div>
                 )}
                 
