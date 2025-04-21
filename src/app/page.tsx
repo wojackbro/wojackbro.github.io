@@ -322,7 +322,7 @@ export default function Home() {
               initial={{ opacity: 0 }}
               animate={isProjectsInView ? { opacity: 1 } : { opacity: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto"
+              className="text-xl text-black max-w-3xl mx-auto"
             >
               Explore some of my recent work and creative endeavors
             </motion.p>
