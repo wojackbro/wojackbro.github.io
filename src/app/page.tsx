@@ -193,7 +193,7 @@ export default function Home() {
                 initial={{ opacity: 0, x: -30 }}
                 animate={isAboutInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-4xl font-bold text-gray-900 dark:text-white mb-8 relative"
+                className="text-4xl font-bold text-white dark:text-white mb-8 relative"
               >
                 <span className="inline-block relative">
                   About Me
@@ -314,7 +314,7 @@ export default function Home() {
               initial={{ opacity: 0 }}
               animate={isProjectsInView ? { opacity: 1 } : { opacity: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-4xl font-bold text-gray-900 dark:text-white mb-4"
+              className="text-4xl font-bold text-white dark:text-white mb-4"
             >
               Featured Projects
             </motion.h2>
@@ -322,7 +322,7 @@ export default function Home() {
               initial={{ opacity: 0 }}
               animate={isProjectsInView ? { opacity: 1 } : { opacity: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-xl text-black max-w-3xl mx-auto"
+              className="text-xl text-white dark:text-white max-w-3xl mx-auto"
             >
               Explore some of my recent work and creative endeavors
             </motion.p>
