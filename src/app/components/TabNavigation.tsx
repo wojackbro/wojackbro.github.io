@@ -95,7 +95,7 @@ export default function TabNavigation() {
     <div 
       className={`fixed w-full top-0 z-50 transition-all duration-300 ${
         isScrolled 
-          ? 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg shadow-lg' 
+          ? 'bg-black/80 dark:bg-black/80 backdrop-blur-lg shadow-lg' 
           : 'bg-transparent'
       }`}
     >
@@ -134,7 +134,7 @@ export default function TabNavigation() {
                       className={`relative group px-3 py-2 rounded-lg transition-all duration-200 flex items-center ${
                         activeTab === item.path
                           ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
-                          : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300'
+                          : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-white dark:text-white'
                       }`}
                     >
                       {item.icon}

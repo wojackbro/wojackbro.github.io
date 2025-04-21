@@ -99,19 +99,19 @@ export default function Home() {
           <div className="text-center">
             <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg inline-block">
               <h1 
-                className="text-5xl md:text-7xl font-bold mb-6 text-white"
+                className="text-5xl md:text-7xl font-bold mb-6 text-black"
               >
                 {profileData.name}
               </h1>
               
               <p 
-                className="text-xl md:text-2xl text-white max-w-3xl mx-auto mb-8"
+                className="text-xl md:text-2xl text-black max-w-3xl mx-auto mb-8"
               >
                 {profileData.title}
               </p>
               
               <p
-                className="text-lg text-white max-w-2xl mx-auto mb-12"
+                className="text-lg text-black max-w-2xl mx-auto mb-12"
               >
                 {profileData.about.split('.')[0] + '.'}
               </p>
