@@ -93,7 +93,7 @@ export default function Home() {
         ref={heroRef}
         className="w-full min-h-screen flex items-center justify-center relative overflow-hidden"
       >
-        <div className="absolute inset-0 z-0 bg-cover bg-center opacity-70" style={{ backgroundImage: 'url(/images/spider.jpg)', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}></div>
+        <div className="absolute inset-0 z-0 bg-cover bg-center opacity-90" style={{ backgroundImage: 'url(/images/spider.jpg)', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}></div>
         {/* Content */}
         <div className="container mx-auto px-6 z-30 py-32">
           <div className="text-center">
@@ -180,7 +180,7 @@ export default function Home() {
         ref={aboutRef}
         className="w-full py-24 bg-white dark:bg-gray-800 overflow-hidden relative"
       >
-        <div className="absolute inset-0 z-0 bg-cover bg-center opacity-70" style={{ backgroundImage: 'url(/images/batman2.jpg)', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}></div>
+        <div className="absolute inset-0 z-0 bg-cover bg-center opacity-90" style={{ backgroundImage: 'url(/images/batman2.jpg)', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}></div>
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -302,7 +302,7 @@ export default function Home() {
         ref={projectsRef}
         className="w-full py-24 bg-gray-50 dark:bg-gray-900 overflow-hidden relative"
       >
-        <div className="absolute inset-0 z-0 bg-cover bg-center opacity-70" style={{ backgroundImage: 'url(/images/batman3.jpg)', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}></div>
+        <div className="absolute inset-0 z-0 bg-cover bg-center opacity-90" style={{ backgroundImage: 'url(/images/batman3.jpg)', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}></div>
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
