@@ -97,21 +97,21 @@ export default function Home() {
         {/* Content */}
         <div className="container mx-auto px-6 z-30 py-32">
           <div className="text-center">
-            <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg inline-block">
+            <div className="bg-blue-900/70 dark:bg-blue-900/70 p-4 rounded-lg inline-block">
               <h1 
-                className="text-5xl md:text-7xl font-bold mb-6 text-black"
+                className="text-5xl md:text-7xl font-bold mb-6 text-white"
               >
                 {profileData.name}
               </h1>
               
               <p 
-                className="text-xl md:text-2xl text-black max-w-3xl mx-auto mb-8"
+                className="text-xl md:text-2xl text-white max-w-3xl mx-auto mb-8"
               >
                 {profileData.title}
               </p>
               
               <p
-                className="text-lg text-black max-w-2xl mx-auto mb-12"
+                className="text-lg text-white max-w-2xl mx-auto mb-12"
               >
                 {profileData.about.split('.')[0] + '.'}
               </p>
