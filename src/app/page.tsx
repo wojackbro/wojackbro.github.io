@@ -97,7 +97,7 @@ export default function Home() {
         {/* Content */}
         <div className="container mx-auto px-6 z-30 py-32">
           <div className="text-center">
-            <div className="bg-blue-900/70 dark:bg-blue-900/70 p-4 rounded-lg inline-block">
+            <div className="bg-gradient-to-br from-blue-600 to-purple-600 p-4 rounded-lg inline-block">
               <h1 
                 className="text-5xl md:text-7xl font-bold mb-6 text-white"
               >
