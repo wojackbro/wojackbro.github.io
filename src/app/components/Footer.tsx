@@ -1,201 +1,96 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { Profile } from '../types/profile';
-import { FaGithub, FaLinkedin, FaGlobe, FaEnvelope, FaPhone, FaMapMarkerAlt, FaFacebook, FaInstagram } from 'react-icons/fa';
+import { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { profileData } from '../data/profile';
+import { useHasMounted } from '../hooks/useHasMounted';
+import { FaGithub, FaLinkedin, FaGlobe, FaMapMarkerAlt, FaFacebook, FaInstagram } from 'react-icons/fa';
 import { SiGooglescholar } from 'react-icons/si';
 
-interface FooterProps {
-  profile: Profile;
-}
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+};
 
-export default function Footer({ profile }: FooterProps) {
-  const footerVariants = {
-    hidden: { 
-      opacity: 0,
-      y: 50
-    },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: {
-        duration: 0.6,
-        staggerChildren: 0.1
-      }
-    }
-  };
-  
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.5 }
-    }
-  };
+export default function Footer() {
+  const mounted = useHasMounted();
+  const footerRef = useRef(null);
+  const footerInView = useInView(footerRef, { once: true, amount: 0.1 });
+  const showFooter = mounted && footerInView;
 
   return (
-    <motion.footer 
+    <motion.footer
+      ref={footerRef}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.1 }}
-      variants={footerVariants}
-      className="w-full bg-gray-900 text-white py-16 overflow-hidden relative"
+      animate={showFooter ? "visible" : "hidden"}
+      variants={{
+        hidden: {},
+        visible: { transition: { staggerChildren: 0.1 } }
+      }}
+      className="w-full bg-[#060a14] text-white py-16 relative overflow-hidden"
     >
-      {/* Background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute w-full h-full opacity-[0.03] bg-[radial-gradient(#ffffff_1px,transparent_1px)] bg-[length:20px_20px]"></div>
-        <div className="absolute top-0 left-0 w-[800px] h-[800px] rounded-full bg-blue-500/5 blur-3xl -translate-y-1/2 -translate-x-1/2"></div>
-        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full bg-purple-500/5 blur-3xl translate-y-1/2 translate-x-1/2"></div>
-      </div>
-      
+      <div className="absolute inset-0 dot-pattern opacity-30" />
+
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-          {/* About Section */}
-          <motion.div variants={itemVariants} className="space-y-6">
-            <h3 className="text-xl font-bold mb-4 text-blue-400">About Me</h3>
-            <p className="text-gray-300 leading-relaxed">
-              {profile.about.length > 150 
-                ? `${profile.about.substring(0, 150)}...` 
-                : profile.about}
-            </p>
-            <motion.div 
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="inline-block"
-            >
-              <Link href="/about" className="text-blue-400 hover:text-blue-300 inline-flex items-center group">
-                Learn more
-                <svg className="ml-1 w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </Link>
-            </motion.div>
-          </motion.div>
-          
-          {/* Contact Section */}
+          {/* About */}
           <motion.div variants={itemVariants} className="space-y-4">
-            <h3 className="text-xl font-bold mb-4 text-blue-400">Contact</h3>
-            <div className="space-y-4">
-              <a 
-                href={`mailto:${profile.email}`} 
-                className="flex items-center text-gray-300 hover:text-blue-300 transition-colors group"
-              >
-                <span className="inline-block w-8 h-8 rounded-full bg-blue-900/50 flex items-center justify-center mr-3 group-hover:bg-blue-800/50 transition-colors">
-                  <FaEnvelope className="w-4 h-4" />
-                </span>
-                <span>{profile.email}</span>
-              </a>
-              
-              <a 
-                href={`tel:${profile.phone}`} 
-                className="flex items-center text-gray-300 hover:text-blue-300 transition-colors group"
-              >
-                <span className="inline-block w-8 h-8 rounded-full bg-blue-900/50 flex items-center justify-center mr-3 group-hover:bg-blue-800/50 transition-colors">
-                  <FaPhone className="w-4 h-4" />
-                </span>
-                <span>{profile.phone}</span>
-              </a>
-              
-              <div className="flex items-center text-gray-300 group">
-                <span className="inline-block w-8 h-8 rounded-full bg-blue-900/50 flex items-center justify-center mr-3">
-                  <FaMapMarkerAlt className="w-4 h-4" />
-                </span>
-                <span>LAquila, Italy</span>
+            <h3 className="text-lg font-bold text-cyan-400">Abid Hossain</h3>
+            <p className="text-slate-400 text-sm leading-relaxed">
+              {profileData.about.substring(0, 180)}...
+            </p>
+            <div className="flex flex-wrap gap-3 pt-2">
+              <Link href="/" className="text-slate-500 hover:text-cyan-400 text-sm transition-colors">Home</Link>
+              <Link href="/projects" className="text-slate-500 hover:text-cyan-400 text-sm transition-colors">Projects</Link>
+              <Link href="/publications" className="text-slate-500 hover:text-cyan-400 text-sm transition-colors">Publications</Link>
+              <Link href="/contact" className="text-slate-500 hover:text-cyan-400 text-sm transition-colors">Contact</Link>
+            </div>
+          </motion.div>
+
+          {/* Location */}
+          <motion.div variants={itemVariants} className="space-y-4">
+            <h3 className="text-lg font-bold text-cyan-400">Location</h3>
+            <div className="space-y-3">
+              <div className="flex items-center gap-3 text-slate-400 text-sm">
+                <FaMapMarkerAlt className="w-4 h-4 shrink-0" />
+                {profileData.location}
               </div>
             </div>
           </motion.div>
-          
-          {/* Follow Section */}
+
+          {/* Social */}
           <motion.div variants={itemVariants} className="space-y-4">
-            <h3 className="text-xl font-bold mb-4 text-blue-400">Follow Me</h3>
-            <div className="flex flex-wrap gap-4">
-              <motion.a
-                href={profile.socialLinks.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ y: -5, scale: 1.1 }}
-                className="w-10 h-10 rounded-full bg-blue-900/50 flex items-center justify-center text-white hover:bg-blue-800 transition-colors"
-              >
-                <FaGithub className="w-5 h-5" />
-              </motion.a>
-              
-              <motion.a
-                href={profile.socialLinks.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ y: -5, scale: 1.1 }}
-                className="w-10 h-10 rounded-full bg-blue-900/50 flex items-center justify-center text-white hover:bg-blue-800 transition-colors"
-              >
-                <FaLinkedin className="w-5 h-5" />
-              </motion.a>
-              
-              <motion.a
-                href={profile.socialLinks.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ y: -5, scale: 1.1 }}
-                className="w-10 h-10 rounded-full bg-blue-900/50 flex items-center justify-center text-white hover:bg-blue-800 transition-colors"
-              >
-                <FaGlobe className="w-5 h-5" />
-              </motion.a>
-              
-              {profile.socialLinks.facebook && (
-                <motion.a
-                  href={profile.socialLinks.facebook}
+            <h3 className="text-lg font-bold text-cyan-400">Connect</h3>
+            <div className="flex flex-wrap gap-3">
+              {[
+                { href: profileData.socialLinks.github, icon: <FaGithub className="w-4 h-4" /> },
+                { href: profileData.socialLinks.linkedin, icon: <FaLinkedin className="w-4 h-4" /> },
+                { href: profileData.socialLinks.website, icon: <FaGlobe className="w-4 h-4" /> },
+                ...(profileData.socialLinks.scholar ? [{ href: profileData.socialLinks.scholar, icon: <SiGooglescholar className="w-4 h-4" /> }] : []),
+                ...(profileData.socialLinks.facebook ? [{ href: profileData.socialLinks.facebook, icon: <FaFacebook className="w-4 h-4" /> }] : []),
+                ...(profileData.socialLinks.instagram ? [{ href: profileData.socialLinks.instagram, icon: <FaInstagram className="w-4 h-4" /> }] : []),
+              ].map((s, i) => (
+                <a
+                  key={i}
+                  href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ y: -5, scale: 1.1 }}
-                  className="w-10 h-10 rounded-full bg-blue-900/50 flex items-center justify-center text-white hover:bg-blue-800 transition-colors"
+                  className="w-9 h-9 rounded-lg border border-slate-800 flex items-center justify-center text-slate-500 hover:text-cyan-400 hover:border-cyan-500/30 transition-all"
                 >
-                  <FaFacebook className="w-5 h-5" />
-                </motion.a>
-              )}
-              
-              {profile.socialLinks.instagram && (
-                <motion.a
-                  href={profile.socialLinks.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ y: -5, scale: 1.1 }}
-                  className="w-10 h-10 rounded-full bg-blue-900/50 flex items-center justify-center text-white hover:bg-blue-800 transition-colors"
-                >
-                  <FaInstagram className="w-5 h-5" />
-                </motion.a>
-              )}
-              
-              {profile.socialLinks.scholar && (
-                <motion.a
-                  href={profile.socialLinks.scholar}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ y: -5, scale: 1.1 }}
-                  className="w-10 h-10 rounded-full bg-blue-900/50 flex items-center justify-center text-white hover:bg-blue-800 transition-colors"
-                >
-                  <SiGooglescholar className="w-5 h-5" />
-                </motion.a>
-              )}
+                  {s.icon}
+                </a>
+              ))}
             </div>
-            
-            <p className="text-gray-400 mt-4">
-              Stay connected with me on social media
-            </p>
           </motion.div>
         </div>
-        
-        <motion.div 
-          variants={itemVariants}
-          className="pt-8 border-t border-gray-800 text-center"
-        >
-          <p className="text-sm text-gray-400 mt-4 md:mt-0">
-            &copy; {new Date().getFullYear()} Abid Hossain. All rights reserved. Made with ❤️ and fueled by coffee. Don&apos;t steal my stuff!
-          </p>
-          <p className="text-gray-500 text-xs mt-2">
-            Designed with 💙 using Next.js, Tailwind CSS, and Framer Motion
+
+        <motion.div variants={itemVariants} className="pt-8 border-t border-slate-800/50 text-center">
+          <p className="text-xs text-slate-600">
+            &copy; {new Date().getFullYear()} Abid Hossain. Built with Next.js, Tailwind CSS & Framer Motion.
           </p>
         </motion.div>
       </div>
     </motion.footer>
   );
-} 
+}

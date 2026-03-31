@@ -2,69 +2,67 @@ import { Profile } from '../types/profile';
 
 export const profileData: Profile = {
   name: "Abid Hossain",
-  title: "Data Scientist & Lecturer",
-  email: "abid_hsn@outlook.com",
-  phone: "(+39) 3298977505",
-  location: "Via Castello, 5 Scoppito, 67019 L'Aquila, Italy",
+  title: "Computer Science Researcher",
+  email: "",
+  phone: "",
+  location: "L'Aquila, Italy",
   nationality: "Bangladeshi",
-  dateOfBirth: "24/09/2000",
-  about: "I'm a highly driven data science student and lecturer, enthusiastic about deep learning and natural language processing. My expertise lies in a profound comprehension of speech and text focused deep learning algorithms, frameworks, and libraries. I adeptly apply these tools to tackle intricate problems, fostering business expansion. Additionally, I bring a creative and inventive mindset, constantly seeking novel applications of large and complex models for real-world problem-solving.",
-  skills: [
-    "Python", 
-    "TypeScript", 
-    "React", 
-    "Node.js", 
-    "Databases", 
-    "Machine Learning", 
-    "Deep Learning", 
-    "NLP", 
-    "TensorFlow", 
-    "PyTorch", 
-    "Docker", 
-    "Cloud"
-  ],
+  about: "Computer Science researcher focused on synthetic data generation, foundation models, and multimodal deep learning for real-world AI systems. Research contributions include privacy-preserving federated learning for speech emotion recognition (IEEE), automated image captioning with deep learning (IEEE), and ongoing work on adapting geospatial foundation models for urban socioeconomic prediction. Experienced in designing custom CNN and transformer-based architectures, building RAG pipelines, and developing simulation-driven modeling frameworks. Currently pursuing an M.Sc. in AI, Complex Networks and Data Analytics at Università degli Studi dell'Aquila while applying queuing theory and computational modeling at Reiss Romoli.",
+  cvLink: "https://drive.google.com/file/d/1qNy4AoAJfYMqSzFmNC9e6A-1wbjNgbvL/view?usp=sharing",
   education: [
     {
-      degree: "Bachelor of Science in Computer Science",
-      institution: "BRAC University",
-      location: "Dhaka, Bangladesh",
-      period: "01/07/2020 – 25/02/2025",
-      website: "https://www.bracu.ac.bd",
-      field: "Information and Communication Technologies",
-      grade: "3.92",
-      thesis: "Sentimental Classification of Bengali Text using a custom LLM based approach"
+      degree: "M.Sc. in Computer Science — AI, Complex Networks and Data Analytics",
+      institution: "Università degli Studi dell'Aquila",
+      location: "L'Aquila, Italy",
+      period: "Sep 2025 – Present",
+      website: "https://www.univaq.it",
+      field: "AI, Complex Networks and Data Analytics",
+      coursework: ["Software Architecture (28/30)", "Numerical Methods (27/30)", "Distributed Computing (25/30)"]
     },
     {
-      degree: "Laurea Magistrale in Mathematical Engineering",
-      institution: "University of L'Aquila",
-      location: "L'Aquila, Italy",
-      period: "23/09/2024 – Current",
-      website: "https://www.univaq.it",
-      field: "Scientific Computing Track"
+      degree: "B.Sc. in Computer Science — School of Data and Sciences",
+      institution: "BRAC University",
+      location: "Dhaka, Bangladesh",
+      period: "Jul 2020 – Feb 2025",
+      website: "https://www.bracu.ac.bd",
+      field: "Computer Science",
+      grade: "3.92 / 4.00",
+      thesis: "Sentimental Classification of Bengali Text Using a Custom LLM-Based Approach"
     }
   ],
   experience: [
     {
-      position: "Adjunct Lecturer",
-      company: "BRAC University",
-      location: "Dhaka, Bangladesh",
-      period: "28/05/2024 – 23/09/2024",
-      website: "http://www.bracu.ac.bd",
+      position: "Software Engineer Intern",
+      company: "Reiss Romoli",
+      location: "L'Aquila, Italy",
+      period: "Oct 2025 – Present",
       responsibilities: [
-        "Took courses of core and advanced computer science courses",
-        "Data Structures and Algorithms, Computer Networks, Digital Logic Design",
-        "Conduct theory and labs, prepare exam and class materials, consultations"
+        "Built discrete event simulation models for queuing systems (M/M/1, M/D/1) in MATLAB, reducing average queue wait-time estimates by 18% within 3 months.",
+        "Evaluated KPIs—waiting time, throughput, resource utilization—to identify bottlenecks in telecom processes.",
+        "Applied queuing theory frameworks to predict system behavior and propose capacity optimization strategies."
       ]
     },
     {
-      position: "Undergraduate Teaching Assistant",
+      position: "Adjunct Lecturer, Dept. of Computer Science & Engineering",
       company: "BRAC University",
       location: "Dhaka, Bangladesh",
-      period: "24/01/2023 – 15/12/2023",
-      website: "http://www.bracu.ac.bd",
+      period: "Apr 2022 – Sep 2024",
+      website: "https://www.bracu.ac.bd",
       responsibilities: [
-        "Assist professors in courses: Programming Languages, OOP, Data Structures, NLP, Pattern Recognition",
-        "Preparation of lab materials and consultation"
+        "Designed and delivered undergraduate curricula in algorithmic analysis, network architecture, and digital systems to 200+ students across 6 semesters.",
+        "Developed hands-on lab exercises and assessment tools; improved average course pass rates by 12%.",
+        "Mentored students on NLP research projects and programming challenges, guiding 3 teams to conference submissions."
+      ]
+    },
+    {
+      position: "Student Tutor, Dept. of Computer Science",
+      company: "BRAC University",
+      location: "Dhaka, Bangladesh",
+      period: "Jan 2023 – Dec 2023",
+      website: "https://www.bracu.ac.bd",
+      responsibilities: [
+        "Facilitated teaching in computational theory, programming paradigms, and pattern recognition courses.",
+        "Co-developed laboratory frameworks bridging theoretical CS with practical NLP and data structure implementations."
       ]
     }
   ],
@@ -72,122 +70,144 @@ export const profileData: Profile = {
     {
       title: "Privacy Preserving Federated Learning Approach for Speech Emotion Recognition",
       authors: [
-        "Chowdhury, Md. Reasad Zaman",
-        "Afiat, Mashfurah",
-        "Hore, Alvin",
-        "Akhter, Rabea",
-        "Sarker, Alex",
-        "Hossain, Abid",
-        "Mehedi, Md Humaion Kabir",
-        "Rasel, Annajiat Alim"
+        "Chowdhury, M.R.Z.", "Afiat, M.", "Hore, A.", "Akhter, R.",
+        "Sarker, A.", "Hossain, A.", "Mehedi, M.H.K.", "Rasel, A.A."
       ],
+      venue: "IEEE",
       link: "https://ieeexplore.ieee.org/abstract/document/10441577",
       date: "2024"
     },
     {
       title: "Automated Image Caption Generation using Deep Learning",
       authors: [
-        "Mahmudul Hasan",
-        "Sara Jerin Prithila",
-        "Tamim Al Ahasan",
-        "Mahmudul Hassan",
-        "Abid Hossain",
-        "Sania Azhmee Bhuiyan",
-        "Annajiat Alim Rasel"
+        "Hasan, M.", "Prithila, S.J.", "Ahasan, T.A.", "Hassan, M.",
+        "Hossain, A.", "Bhuiyan, S.A.", "Rasel, A.A."
       ],
+      venue: "IEEE",
       link: "https://ieeexplore.ieee.org/abstract/document/10441058/",
       date: "2024"
     }
   ],
-  awards: [
+  preprints: [
     {
-      title: "Highest Distinction in Computer Science and Engineering Department",
-      issuer: "BRAC University",
-      date: "25/02/2025"
-    },
-    {
-      title: "Certificate of Highest Achievement",
-      issuer: "Pearson",
-      date: "12/11/2017",
-      description: "7 'A' Grades (4A*) in International GCSE"
-    },
-    {
-      title: "Award of Recognition in Volunteer Work",
-      issuer: "BRAC University Computer Club",
-      date: "15/08/2021"
+      title: "Adapting Geospatial Foundation Models for Urban Socioeconomic Indicators: A Paired Multimodal Evaluation on CityLens",
+      authors: ["Hossain, A."],
+      status: "Under Review"
     }
   ],
   projects: [
     {
-      title: "Charity Database Project",
-      description: "A platform connecting donors with NGOs and individuals in need. Features include account creation, donation management, profile creation, and an inbuilt messaging system.",
-      technologies: ["PHP", "SQL", "CSS", "HTML"],
-      link: "https://github.com/wojackbro/charity_donation_website",
-      image: "/images/projects/rural.jpg",
-      period: "10/05/2022 – 03/06/2022"
+      title: "Are Biological Foundation Model Benchmarks Actually Trustworthy?",
+      description: "Systematically auditing data contamination in protein and RNA language models by adapting membership inference, n-gram overlap, slot guessing to biological sequences. Quantifies SOTA performance benchmarks (Rfam, ProteinGym etc) inflation on train-test overlap. Proposes temporal-split and homology-aware decontamination protocols for reliable future evaluation.",
+      technologies: ["Python", "PyTorch", "Transformers", "Bioinformatics"],
+      period: "Mar 2026 – Present"
     },
     {
-      title: "Company Analytics Platform",
-      description: "A modular data dashboard for visualizing company performance and trends—ideal for analytics and decision-making.",
-      technologies: ["Python", "Pandas", "Matplotlib", "Jupyter"],
-      link: "https://github.com/wojackbro/Company_Analytics_Project",
-      image: "/images/projects/analytics.jpg",
-      period: "15/09/2023 – 30/10/2023"
+      title: "SplatCabin: Privacy-Preserving Synthetic Driver Monitoring via 3D Gaussian Splatting",
+      description: "Built an end-to-end research pipeline that reconstructs photorealistic car interiors using 3D Gaussian Splatting, composites diverse SMPL-X human avatars via depth-aware rendering, and generates large-scale annotated synthetic datasets for driver monitoring. Trained and evaluated DMS classifiers (ResNet-50, ViT) on synthetic data with successful domain transfer to real-world benchmarks.",
+      technologies: ["Python", "PyTorch", "3D Gaussian Splatting", "SMPL-X", "ResNet-50", "ViT"],
+      period: "Mar 2026 – Present"
     },
     {
-      title: "NLP-Based Corpus Project",
-      description: "A Named Entity Recognition dataset and pipeline for Bengali language using transformers and transfer learning.",
-      technologies: ["Python", "PyTorch", "Transformers", "BERT"],
-      link: "https://github.com/wojackbro/NLP_projects",
-      image: "/images/projects/nlp.jpg",
-      period: "01/11/2023 – 15/01/2024"
+      title: "Enhanced Dimensional Object Detection in Real-Time",
+      description: "Implemented real-time object detection with dimensional measurement using camera calibration and focal-length-based depth estimation. Supported live camera input and reported object classes with confidence scores.",
+      technologies: ["Python", "OpenCV", "Deep Learning", "Camera Calibration"],
+      period: "Nov 2024 – Mar 2025"
     },
     {
-      title: "Retinal Disease Classification",
-      description: "Custom deep learning model and ablation testing for detecting retinal diseases from medical images.",
-      technologies: ["Python", "TensorFlow", "CNN", "Medical Imaging"],
+      title: "Custom CNN for Retinal Disease Classification",
+      description: "Designed and evaluated custom CNN architectures (6–12 layers, 2.9M parameters) for 4-class retinal fundus image classification, achieving 94.13% test accuracy. Performed ablation studies to analyze architectural components and implemented Grad-CAM for model interpretability.",
+      technologies: ["Python", "TensorFlow", "CNN", "Grad-CAM", "Medical Imaging"],
       link: "https://github.com/wojackbro/Custom-Model-and-Ablation-Testing-for-Retinal-Disease--Journal-Publication-",
-      image: "/images/projects/retinal.jpg",
-      period: "05/02/2024 – 20/04/2024"
+      period: "Aug 2025 – Present"
     },
     {
-      title: "ETL Pipeline for University Department",
-      description: "An ETL pipeline created to Extract, Transform and Load data from the university department website with automated reporting.",
-      technologies: ["Python", "Pandas", "BeautifulSoup", "SQLAlchemy"],
-      link: "https://github.com/wojackbro/ETL_pipeline_BRACUniversity_SDS",
-      image: "/images/projects/etl.jpg",
-      period: "12/03/2024 – 05/05/2024"
-    },
-    {
-      title: "Bengali Sentiment Classification",
-      description: "A machine learning system for sentiment analysis of Bengali text using custom language models and transfer learning techniques.",
-      technologies: ["Python", "HuggingFace", "RoBERTa", "NLP"],
+      title: "Bengali Sentiment Classification using Custom LLM",
+      description: "A machine learning system for sentiment analysis of Bengali text using custom language models and transfer learning techniques. Developed as undergraduate thesis project.",
+      technologies: ["Python", "HuggingFace", "RoBERTa", "NLP", "Transfer Learning"],
       link: "https://github.com/wojackbro/Sentiment_Classification_Bengali_Text",
-      image: "/images/projects/sentiment.jpg",
-      period: "10/06/2024 – 25/08/2024"
+      period: "Jun 2024 – Feb 2025"
+    },
+    {
+      title: "NLP-Based Bengali Named Entity Recognition",
+      description: "A Named Entity Recognition dataset and pipeline for Bengali language using transformers and transfer learning.",
+      technologies: ["Python", "PyTorch", "Transformers", "BERT", "NLP"],
+      link: "https://github.com/wojackbro/NLP_projects",
+      period: "Nov 2023 – Jan 2024"
+    }
+  ],
+  awards: [
+    {
+      title: "Highest Distinction, Dept. of CSE",
+      issuer: "BRAC University",
+      date: "Feb 2025"
+    },
+    {
+      title: "Dean's List of Academic Excellence — All Semesters",
+      issuer: "BRAC University",
+      date: "2020 – 2025"
+    },
+    {
+      title: "Vice Chancellor's List of Academic Excellence",
+      issuer: "BRAC University",
+      date: "2020 – 2025"
+    },
+    {
+      title: "Merit Scholarship Award Based on Academic Excellence",
+      issuer: "BRAC University",
+      date: "2020 – 2025"
+    },
+    {
+      title: "Certificate of Highest Achievement",
+      issuer: "Pearson",
+      date: "Nov 2017",
+      description: "7 'A' Grades (4A*) in International GCSE"
+    }
+  ],
+  certifications: [
+    {
+      title: "Machine Learning for Time Series Data in Python",
+      issuer: "DataCamp",
+      date: "Apr 2024"
+    },
+    {
+      title: "Feature Engineering for Machine Learning in Python",
+      issuer: "DataCamp",
+      date: "Feb 2023"
+    }
+  ],
+  skillCategories: [
+    {
+      category: "Programming",
+      items: ["Python", "C", "C++", "Java", "MATLAB", "JavaScript", "PHP"]
+    },
+    {
+      category: "ML / DL",
+      items: ["PyTorch", "TensorFlow", "Keras", "Caffe", "Scikit-learn", "Hugging Face", "LangChain"]
+    },
+    {
+      category: "Data & Vision",
+      items: ["Pandas", "NumPy", "OpenCV", "FAISS", "NLTK"]
+    },
+    {
+      category: "Web",
+      items: ["React", "Streamlit", "Tailwind CSS", "Framer Motion", "HTML/CSS"]
+    },
+    {
+      category: "Tools",
+      items: ["Git", "Docker", "MATLAB Simulink", "CoppeliaSim", "Wireshark", "NS3", "Cisco Packet Tracer"]
     }
   ],
   languages: [
-    {
-      name: "Bengali",
-      level: "Native"
-    },
-    {
-      name: "English",
-      level: "C2",
-      listening: "C2",
-      reading: "C2",
-      writing: "C1",
-      spokenProduction: "C2",
-      spokenInteraction: "C1"
-    }
+    { name: "Bengali", level: "Native" },
+    { name: "English", level: "C2" }
   ],
   socialLinks: {
     github: "https://github.com/wojackbro",
     linkedin: "https://www.linkedin.com/in/abidanick",
-    website: "https://www.abidbhay.github.io",
+    website: "https://abidhossain.me",
     facebook: "https://www.facebook.com/abid.hussen.anik",
     instagram: "https://www.instagram.com/abid.krishnoborno",
     scholar: "https://scholar.google.com/citations?hl=en&user=9SFNxhMAAAAJ"
   }
-}; 
+};

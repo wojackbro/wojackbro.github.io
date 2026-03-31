@@ -1,20 +1,20 @@
+'use client';
+
 import TabNavigation from '../../components/TabNavigation';
 import Footer from '../../components/Footer';
-import { profileData } from '../../data/profile';
 
 export default function ShooterGamePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between bg-gray-50 dark:bg-gray-900">
+    <main className="flex min-h-screen flex-col items-center bg-[#0a0f1a]">
       <TabNavigation />
-      <section className="w-full py-32 bg-gradient-to-b from-blue-900 via-purple-900 to-gray-900 text-white">
-        <div className="container mx-auto px-6">
-          <h1 className="text-5xl font-bold mb-6 text-center">Shooter Game</h1>
-          <p className="text-xl text-blue-200 text-center">
-            Engage in thrilling shooting action.
-          </p>
+      <section className="w-full pt-32 pb-20 relative overflow-hidden">
+        <div className="absolute inset-0 dot-pattern" />
+        <div className="container mx-auto px-6 relative z-10 text-center">
+          <h1 className="text-4xl font-bold text-white mb-4">Shooter Game</h1>
+          <p className="text-slate-400 text-lg">Coming soon.</p>
         </div>
       </section>
-      <Footer profile={profileData} />
+      <Footer />
     </main>
   );
-} 
+}

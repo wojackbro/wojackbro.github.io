@@ -7,6 +7,7 @@ export interface Education {
   field: string;
   grade?: string;
   thesis?: string;
+  coursework?: string[];
 }
 
 export interface Experience {
@@ -14,15 +15,22 @@ export interface Experience {
   company: string;
   location: string;
   period: string;
-  website: string;
+  website?: string;
   responsibilities: string[];
 }
 
 export interface Publication {
   title: string;
   authors: string[];
-  link: string;
+  venue: string;
+  link?: string;
   date: string;
+}
+
+export interface Preprint {
+  title: string;
+  authors: string[];
+  status: string;
 }
 
 export interface Award {
@@ -36,19 +44,24 @@ export interface Project {
   title: string;
   description: string;
   technologies: string[];
-  link: string;
-  image?: string;
+  link?: string;
   period: string;
+}
+
+export interface Certification {
+  title: string;
+  issuer: string;
+  date: string;
+}
+
+export interface SkillCategory {
+  category: string;
+  items: string[];
 }
 
 export interface Language {
   name: string;
   level: string;
-  listening?: string;
-  reading?: string;
-  writing?: string;
-  spokenProduction?: string;
-  spokenInteraction?: string;
 }
 
 export interface Profile {
@@ -58,15 +71,16 @@ export interface Profile {
   phone: string;
   location: string;
   nationality: string;
-  dateOfBirth: string;
   about: string;
   education: Education[];
   experience: Experience[];
   publications: Publication[];
+  preprints: Preprint[];
   awards: Award[];
   projects: Project[];
+  certifications: Certification[];
   languages: Language[];
-  skills: string[];
+  skillCategories: SkillCategory[];
   socialLinks: {
     github: string;
     linkedin: string;
@@ -75,9 +89,5 @@ export interface Profile {
     instagram?: string;
     scholar?: string;
   };
-  company?: string;
-  followers?: number;
-  following?: number;
-  repositories?: number;
-  hireable?: boolean;
-} 
+  cvLink: string;
+}

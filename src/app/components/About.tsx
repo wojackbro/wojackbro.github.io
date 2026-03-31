@@ -33,18 +33,7 @@ export default function About({ profile }: AboutProps) {
                   <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400">Nationality</h3>
                   <p className="text-gray-900 dark:text-white">{profile.nationality}</p>
                 </div>
-                <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                  <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400">Email</h3>
-                  <a href={`mailto:${profile.email}`} className="text-blue-600 dark:text-blue-400 hover:underline">
-                    {profile.email}
-                  </a>
-                </div>
-                <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                  <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400">Phone</h3>
-                  <a href={`tel:${profile.phone}`} className="text-gray-900 dark:text-white">
-                    {profile.phone}
-                  </a>
-                </div>
+                
               </div>
             </div>
             <div className="flex justify-center">

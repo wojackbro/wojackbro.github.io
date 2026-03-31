@@ -1,486 +1,615 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { useHasMounted } from './hooks/useHasMounted';
 import TabNavigation from './components/TabNavigation';
 import Footer from './components/Footer';
 import { profileData } from './data/profile';
-import { FaReact, FaNodeJs, FaPython, FaJava, FaDatabase, FaServer, FaCloud, FaMobile, FaGithub, FaLinkedin, FaGlobe } from 'react-icons/fa';
-import { SiTypescript, SiJavascript, SiDocker, SiKubernetes } from 'react-icons/si';
+import {
+  FaGithub, FaLinkedin, FaDownload, FaMapMarkerAlt,
+  FaGraduationCap, FaAward, FaCertificate, FaExternalLinkAlt
+} from 'react-icons/fa';
+import { SiGooglescholar } from 'react-icons/si';
 
-// Function to get the appropriate icon for a skill
-const getSkillIcon = (skill: string) => {
-  switch (skill.toLowerCase()) {
-    case 'react':
-      return <FaReact className="w-8 h-8" />;
-    case 'node.js':
-      return <FaNodeJs className="w-8 h-8" />;
-    case 'typescript':
-      return <SiTypescript className="w-8 h-8" />;
-    case 'javascript':
-      return <SiJavascript className="w-8 h-8" />;
-    case 'python':
-      return <FaPython className="w-8 h-8" />;
-    case 'java':
-      return <FaJava className="w-8 h-8" />;
-    case 'databases':
-      return <FaDatabase className="w-8 h-8" />;
-    case 'backend':
-      return <FaServer className="w-8 h-8" />;
-    case 'cloud':
-      return <FaCloud className="w-8 h-8" />;
-    case 'mobile':
-      return <FaMobile className="w-8 h-8" />;
-    case 'docker':
-      return <SiDocker className="w-8 h-8" />;
-    case 'kubernetes':
-      return <SiKubernetes className="w-8 h-8" />;
-    default:
-      return <FaReact className="w-8 h-8" />;
-  }
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, delay: i * 0.1 }
+  })
 };
 
-// Placeholder component for projects that don't have images
-const ProjectImagePlaceholder = ({ title }: { title: string }) => {
-  // Generate a consistent gradient based on the project title
-  const hash = title.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const hue1 = hash % 360;
-  const hue2 = (hue1 + 40) % 360;
-  
+const stagger = {
+  visible: { transition: { staggerChildren: 0.08 } }
+};
+
+/** Math / CS research aesthetic — Unsplash (Dan Cristian Pădureț) */
+const MATH_BOARD_BG = '/images/hero-tech-2.jpg';
+
+function MathBoardBackdrop({ variant }: { variant: 'hero' | 'light' | 'dark' }) {
+  if (variant === 'hero') {
+    return (
+      <>
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${MATH_BOARD_BG})` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f1a]/92 via-[#0a0f1a]/82 to-[#0a0f1a]/92" />
+        <div className="absolute inset-0 dot-pattern opacity-[0.12] pointer-events-none" />
+      </>
+    );
+  }
+  const tint = variant === 'dark' ? 'bg-[#0d1321]/93' : 'bg-[#0a0f1a]/93';
   return (
-    <div className="absolute inset-0 bg-gradient-to-br" style={{
-      background: `linear-gradient(135deg, hsl(${hue1}, 70%, 60%), hsl(${hue2}, 70%, 45%))`
-    }}>
-      <div className="absolute inset-0 grid-pattern opacity-20"></div>
-      <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
-        <h3 className="text-2xl md:text-3xl font-bold text-white">{title}</h3>
-      </div>
+    <>
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-[0.2]"
+        style={{ backgroundImage: `url(${MATH_BOARD_BG})` }}
+      />
+      <div className={`absolute inset-0 ${tint}`} />
+    </>
+  );
+}
+
+function SectionHeading({ title, subtitle }: { title: string; subtitle?: string }) {
+  return (
+    <div className="text-center mb-16">
+      <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
+        {title}
+      </h2>
+      {subtitle && (
+        <p className="text-slate-400 text-lg max-w-2xl mx-auto">{subtitle}</p>
+      )}
+      <div className="section-divider mt-6 mx-auto max-w-xs" />
     </div>
   );
-};
+}
 
 export default function Home() {
-  // Add some placeholder skills if profileData.skills is empty or undefined
-  const skills = profileData.skills?.length > 0 ? profileData.skills : 
-    ['React', 'Node.js', 'TypeScript', 'JavaScript', 'Python', 'Java', 'Databases', 'Backend', 'Cloud', 'Mobile', 'Docker', 'Kubernetes'];
-
-  // Use real projects from profileData
-  const projects = profileData.projects.slice(0, 4).map(project => ({
-    title: project.title,
-    description: project.description,
-    tags: project.technologies.slice(0, 4),
-    image: project.image || `/images/projects/${project.title.toLowerCase().replace(/\s+/g, '-')}.jpg`,
-    link: project.link
-  }));
-
-  const heroRef = useRef(null);
-  const projectsRef = useRef(null);
-  const skillsRef = useRef(null);
+  const mounted = useHasMounted();
   const aboutRef = useRef(null);
+  const expRef = useRef(null);
+  const eduRef = useRef(null);
+  const pubRef = useRef(null);
+  const projRef = useRef(null);
+  const skillsRef = useRef(null);
+  const awardsRef = useRef(null);
 
-  const isProjectsInView = useInView(projectsRef, { once: false, amount: 0.2 });
-  const isSkillsInView = useInView(skillsRef, { once: false, amount: 0.2 });
-  const isAboutInView = useInView(aboutRef, { once: false, amount: 0.2 });
+  const isAboutInView = useInView(aboutRef, { once: true, amount: 0.2 });
+  const isExpInView = useInView(expRef, { once: true, amount: 0.15 });
+  const isEduInView = useInView(eduRef, { once: true, amount: 0.2 });
+  const isPubInView = useInView(pubRef, { once: true, amount: 0.2 });
+  const isProjInView = useInView(projRef, { once: true, amount: 0.1 });
+  const isSkillsInView = useInView(skillsRef, { once: true, amount: 0.2 });
+  const isAwardsInView = useInView(awardsRef, { once: true, amount: 0.2 });
+
+  const showAbout = mounted && isAboutInView;
+  const showExp = mounted && isExpInView;
+  const showEdu = mounted && isEduInView;
+  const showPub = mounted && isPubInView;
+  const showProj = mounted && isProjInView;
+  const showSkills = mounted && isSkillsInView;
+  const showAwards = mounted && isAwardsInView;
 
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-between overflow-hidden bg-gray-50 dark:bg-gray-900">
+    <main className="relative flex min-h-screen flex-col items-center overflow-hidden bg-[#0a0f1a]">
       <TabNavigation />
-      
-      {/* Hero Section with Parallax Effect */}
-      <section
-        ref={heroRef}
-        className="w-full min-h-screen flex items-center justify-center relative overflow-hidden"
-      >
-        <div className="absolute inset-0 z-0 bg-cover bg-center opacity-90" style={{ backgroundImage: 'url(/images/spider.jpg)', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}></div>
-        {/* Content */}
-        <div className="container mx-auto px-6 z-30 py-32">
-          <div className="text-center">
-            <div className="bg-black/30 p-4 rounded-lg inline-block">
-              <h1 
-                className="text-5xl md:text-7xl font-bold mb-6 text-white"
-              >
-                {profileData.name}
-              </h1>
-              
-              <p 
-                className="text-xl md:text-2xl text-white max-w-3xl mx-auto mb-8"
-              >
-                {profileData.title}
-              </p>
-              
-              <p
-                className="text-lg text-white max-w-2xl mx-auto mb-12"
-              >
-                {profileData.about.split('.')[0] + '.'}
-              </p>
-            </div>
-            
-            <div className="flex flex-wrap justify-center gap-4">
-              <a
-                href="#projects"
-                className="bg-blue-600 text-white font-semibold py-4 px-8 rounded-full shadow-lg transition duration-300"
-              >
-                View Projects
-          </a>
-          <a
-                href="#about"
-                className="bg-transparent text-white font-semibold py-4 px-8 rounded-full border-2 border-white/70 hover:bg-white/10 transition duration-300"
-              >
-                About Me
-          </a>
+
+      {/* ─── HERO ─── */}
+      <section className="w-full min-h-screen flex items-center justify-center relative overflow-hidden">
+        <MathBoardBackdrop variant="hero" />
+        <div className="absolute inset-0 pointer-events-none z-[1]">
+          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-cyan-500/10 blur-[120px] pulse-glow" />
+          <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-violet-500/10 blur-[120px] pulse-glow" style={{ animationDelay: '1.5s' }} />
         </div>
-            
-            <div className="flex justify-center mt-16 space-x-6">
-        <a
-                href={profileData.socialLinks.github}
-          target="_blank"
-          rel="noopener noreferrer"
-                className="text-blue-300 hover:text-white transition-all"
+
+        <div className="container mx-auto px-6 relative z-10 py-32">
+          <div className="text-center max-w-4xl mx-auto">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-cyan-400 font-mono text-sm tracking-widest uppercase mb-6"
+            >
+              Welcome to my portfolio
+            </motion.p>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight"
+            >
+              {profileData.name}
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-xl md:text-2xl text-gradient font-semibold mb-6"
+            >
+              {profileData.title}
+            </motion.p>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="text-slate-400 text-lg max-w-2xl mx-auto mb-10 leading-relaxed"
+            >
+              Synthetic data generation &bull; Foundation models &bull; Multimodal deep learning
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="flex flex-wrap justify-center gap-4 mb-12"
+            >
+              <a
+                href={profileData.cvLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold rounded-lg hover:from-cyan-400 hover:to-blue-500 transition-all duration-300 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 hover:-translate-y-0.5"
               >
-                <FaGithub className="w-8 h-8" />
-        </a>
-        <a
-                href={profileData.socialLinks.linkedin}
-          target="_blank"
-          rel="noopener noreferrer"
-                className="text-blue-300 hover:text-white transition-all"
-              >
-                <FaLinkedin className="w-8 h-8" />
+                <FaDownload className="w-4 h-4" />
+                Download CV
               </a>
-              <motion.a
-                href={profileData.socialLinks.website}
-          target="_blank"
-          rel="noopener noreferrer"
-                whileHover={{ y: -5, color: "#fff" }}
-                className="text-blue-300 hover:text-white transition-all"
+              <a
+                href="#about"
+                className="inline-flex items-center px-8 py-3.5 border border-slate-600 text-slate-300 font-semibold rounded-lg hover:border-cyan-500/50 hover:text-white hover:bg-cyan-500/5 transition-all duration-300"
               >
-                <FaGlobe className="w-8 h-8" />
-              </motion.a>
-            </div>
+                Learn More
+              </a>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              className="flex justify-center gap-5"
+            >
+              {[
+                { href: profileData.socialLinks.github, icon: <FaGithub className="w-5 h-5" />, label: "GitHub" },
+                { href: profileData.socialLinks.linkedin, icon: <FaLinkedin className="w-5 h-5" />, label: "LinkedIn" },
+                { href: profileData.socialLinks.scholar!, icon: <SiGooglescholar className="w-5 h-5" />, label: "Scholar" },
+              ].map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-11 h-11 rounded-full border border-slate-700 flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:border-cyan-500/50 hover:bg-cyan-500/5 transition-all duration-300"
+                  aria-label={s.label}
+                >
+                  {s.icon}
+                </a>
+              ))}
+            </motion.div>
           </div>
         </div>
-        
-        {/* Scroll indicator */}
-        <motion.div 
-          className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
+
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
         >
-          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>
         </motion.div>
       </section>
 
-      {/* About Me Section with Parallax */}
-      <section 
-        id="about" 
-        ref={aboutRef}
-        className="w-full py-24 bg-white dark:bg-gray-800 overflow-hidden relative"
-      >
-        <div className="absolute inset-0 z-0 bg-cover bg-center opacity-90" style={{ backgroundImage: 'url(/images/batman2.jpg)', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}></div>
-        <div className="container mx-auto px-6 relative z-10">
+      {/* ─── ABOUT ─── */}
+      <section id="about" ref={aboutRef} className="w-full py-24 relative overflow-hidden">
+        <MathBoardBackdrop variant="light" />
+        <div className="container mx-auto px-6 max-w-5xl relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={isAboutInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-            transition={{ duration: 0.6 }}
-            className="flex flex-col md:flex-row items-center gap-12 md:gap-20"
+            initial="hidden"
+            animate={showAbout ? "visible" : "hidden"}
+            variants={stagger}
           >
-            <div className="w-full md:w-1/2">
-              <motion.h2 
-                initial={{ opacity: 0, x: -30 }}
-                animate={isAboutInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-4xl font-bold text-white dark:text-white mb-8 relative"
-              >
-                <span className="inline-block relative">
-                  About Me
-                  <motion.span 
-                    initial={{ width: 0 }}
-                    animate={isAboutInView ? { width: '100%' } : { width: 0 }}
-                    transition={{ duration: 0.8, delay: 0.4 }}
-                    className="absolute bottom-0 left-0 h-1 bg-blue-600"
-                  />
-                </span>
-              </motion.h2>
-              
-              <motion.p 
-                initial={{ opacity: 0 }}
-                animate={isAboutInView ? { opacity: 1 } : { opacity: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="text-lg text-gray-700 dark:text-gray-300 mb-6 leading-relaxed bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg"
-              >
+            <SectionHeading title="About Me" />
+            <motion.div variants={fadeUp} className="glass-card rounded-2xl p-8 md:p-10">
+              <p className="text-slate-300 text-lg leading-relaxed mb-8">
                 {profileData.about}
-              </motion.p>
-              
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={isAboutInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.5, delay: 0.6 }}
-                className="space-y-4 bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg"
-              >
-                <div className="flex items-center">
-                  <span className="text-blue-600 font-semibold w-20">Email:</span>
-                  <a href={`mailto:${profileData.email}`} className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                    {profileData.email}
-                  </a>
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex items-center gap-3 text-slate-400">
+                  <FaMapMarkerAlt className="text-cyan-400 shrink-0" />
+                  <span>{profileData.location}</span>
                 </div>
-                <div className="flex items-center">
-                  <span className="text-blue-600 font-semibold w-20">Location:</span>
-                  <span className="text-gray-700 dark:text-gray-300">LAquila, Italy</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="text-blue-600 font-semibold w-20">Education:</span>
-                  <span className="text-gray-700 dark:text-gray-300">{profileData.education[0].degree}</span>
-                </div>
-              </motion.div>
-            </div>
-            
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={isAboutInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="w-full md:w-1/2 relative aspect-square max-w-md"
-            >
-              <div className="relative w-full h-full rounded-2xl overflow-hidden bg-gradient-to-tr from-blue-600 to-purple-600 shadow-2xl">
-                <div className="absolute w-full h-full bg-[radial-gradient(#ffffff11_1px,transparent_1px)] bg-[length:20px_20px]"></div>
-                <div className="absolute inset-2 bg-gray-900/90 rounded-xl overflow-hidden flex items-center justify-center p-8">
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={isAboutInView ? { opacity: 1 } : { opacity: 0 }}
-                    transition={{ duration: 0.5, delay: 0.8 }}
-                    className="text-center"
-                  >
-                    <div className="relative w-32 h-32 mx-auto rounded-full overflow-hidden mb-6 border-4 border-blue-500/50">
-          <Image
-                        src="/images/profile.jpg" 
-                        alt={profileData.name}
-                        fill
-                        className="object-cover opacity-100"
-                        sizes="128px"
-                      />
-                    </div>
-                    <h3 className="text-2xl font-bold text-white mb-2">{profileData.name}</h3>
-                    <p className="text-blue-300 mb-6">{profileData.title}</p>
-                    <div className="flex justify-center space-x-4">
-                      <motion.a
-                        whileHover={{ y: -5, color: "#fff" }}
-                        href={profileData.socialLinks.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-400 hover:text-white transition-all"
-                      >
-                        <FaGithub className="w-6 h-6" />
-                      </motion.a>
-                      <motion.a
-                        whileHover={{ y: -5, color: "#fff" }}
-                        href={profileData.socialLinks.linkedin}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-400 hover:text-white transition-all"
-                      >
-                        <FaLinkedin className="w-6 h-6" />
-                      </motion.a>
-                    </div>
-                  </motion.div>
+                <div className="flex items-center gap-3 text-slate-400">
+                  <FaGraduationCap className="text-cyan-400 shrink-0" />
+                  <span className="truncate">{profileData.education[0].institution}</span>
                 </div>
               </div>
             </motion.div>
           </motion.div>
         </div>
-        
-        {/* Background decorative elements */}
-        <div className="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl"></div>
       </section>
 
-      {/* Featured Projects Section with Animations */}
-      <section 
-        id="projects" 
-        ref={projectsRef}
-        className="w-full py-24 bg-gray-50 dark:bg-gray-900 overflow-hidden relative"
-      >
-        <div className="absolute inset-0 z-0 bg-cover bg-center opacity-90" style={{ backgroundImage: 'url(/images/batman3.jpg)', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}></div>
-        <div className="container mx-auto px-6 relative z-10">
+      {/* ─── EXPERIENCE ─── */}
+      <section id="experience" ref={expRef} className="w-full py-24 relative overflow-hidden bg-[#0d1321]">
+        <MathBoardBackdrop variant="dark" />
+        <div className="container mx-auto px-6 max-w-5xl relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isProjectsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-20"
+            initial="hidden"
+            animate={showExp ? "visible" : "hidden"}
+            variants={stagger}
           >
-            <motion.h2 
-              initial={{ opacity: 0 }}
-              animate={isProjectsInView ? { opacity: 1 } : { opacity: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-4xl font-bold text-white dark:text-white mb-4"
-            >
-              Featured Projects
-            </motion.h2>
-            <motion.p 
-              initial={{ opacity: 0 }}
-              animate={isProjectsInView ? { opacity: 1 } : { opacity: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-xl text-white dark:text-white max-w-3xl mx-auto"
-            >
-              Explore some of my recent work and creative endeavors
-            </motion.p>
+            <SectionHeading title="Experience" subtitle="Professional and academic roles" />
+            <div className="relative pl-10">
+              <div className="timeline-line" />
+              {profileData.experience.map((exp, i) => (
+                <motion.div
+                  key={i}
+                  variants={fadeUp}
+                  custom={i}
+                  className="relative mb-12 last:mb-0"
+                >
+                  <div className="absolute left-[-2.05rem] top-1.5 timeline-dot" />
+                  <div className="glass-card rounded-xl p-6 hover:border-cyan-500/20 transition-colors">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-3">
+                      <h3 className="text-lg font-bold text-white">{exp.position}</h3>
+                      <span className="text-sm text-cyan-400 font-mono">{exp.period}</span>
+                    </div>
+                    <p className="text-slate-400 text-sm mb-4">
+                      {exp.company} &bull; {exp.location}
+                    </p>
+                    <ul className="space-y-2">
+                      {exp.responsibilities.map((r, j) => (
+                        <li key={j} className="text-slate-300 text-sm leading-relaxed flex gap-2">
+                          <span className="text-cyan-500 mt-1 shrink-0">▸</span>
+                          <span>{r}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
-          <div className="flex justify-center">
-            {/* Removed the small Batman image */}
-          </div>
+        </div>
+      </section>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
-            {projects.map((project, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 50 }}
-                animate={isProjectsInView ? 
-                  { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2 + index * 0.1 } } : 
-                  { opacity: 0, y: 50 }
-                }
-                whileHover={{ 
-                  y: -10, 
-                  boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
-                  transition: { duration: 0.3 }
-                }}
-                className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
-              >
-                <div className="relative h-64 w-full overflow-hidden">
-                  <ProjectImagePlaceholder title={project.title} />
-                  <motion.div 
-                    initial={{ scale: 1.2, opacity: 0 }}
-                    animate={isProjectsInView ? { scale: 1, opacity: 1 } : { scale: 1.2, opacity: 0 }}
-                    transition={{ duration: 0.8, delay: 0.4 + index * 0.1 }}
-                    className="absolute inset-0 flex items-center justify-center"
-                  >
-                    <h3 className="text-3xl font-bold text-white px-6 py-4 bg-black/30 backdrop-blur-sm rounded-lg">
-                      {project.title}
-                    </h3>
-                  </motion.div>
-                </div>
-                <div className="p-8">
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{project.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-6 line-clamp-3">{project.description}</p>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {project.tags.map((tag, tagIndex) => (
-                      <span
-                        key={tagIndex}
-                        className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-sm rounded-full"
+      {/* ─── EDUCATION ─── */}
+      <section id="education" ref={eduRef} className="w-full py-24 relative overflow-hidden">
+        <MathBoardBackdrop variant="light" />
+        <div className="container mx-auto px-6 max-w-5xl relative z-10">
+          <motion.div
+            initial="hidden"
+            animate={showEdu ? "visible" : "hidden"}
+            variants={stagger}
+          >
+            <SectionHeading title="Education" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {profileData.education.map((edu, i) => (
+                <motion.div
+                  key={i}
+                  variants={fadeUp}
+                  custom={i}
+                  className="glass-card rounded-xl p-6 hover:border-cyan-500/20 transition-colors group"
+                >
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center shrink-0 group-hover:bg-cyan-500/20 transition-colors">
+                      <FaGraduationCap className="text-cyan-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-white font-bold text-base leading-snug">{edu.degree}</h3>
+                      <p className="text-slate-400 text-sm mt-1">{edu.institution}</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between text-slate-400">
+                      <span>{edu.location}</span>
+                      <span className="text-cyan-400 font-mono">{edu.period}</span>
+                    </div>
+                    {edu.grade && (
+                      <p className="text-slate-300">
+                        <span className="text-slate-500">GPA:</span> {edu.grade}
+                      </p>
+                    )}
+                    {edu.thesis && (
+                      <p className="text-slate-300">
+                        <span className="text-slate-500">Thesis:</span> {edu.thesis}
+                      </p>
+                    )}
+                    {edu.coursework && (
+                      <div className="flex flex-wrap gap-1.5 mt-3">
+                        {edu.coursework.map((c, j) => (
+                          <span key={j} className="px-2 py-0.5 text-xs rounded-full bg-slate-800 text-slate-400 border border-slate-700">
+                            {c}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ─── PUBLICATIONS ─── */}
+      <section id="publications" ref={pubRef} className="w-full py-24 relative overflow-hidden bg-[#0d1321]">
+        <MathBoardBackdrop variant="dark" />
+        <div className="container mx-auto px-6 max-w-5xl relative z-10">
+          <motion.div
+            initial="hidden"
+            animate={showPub ? "visible" : "hidden"}
+            variants={stagger}
+          >
+            <SectionHeading title="Publications & Research" subtitle="Peer-reviewed papers and ongoing work" />
+
+            <div className="space-y-5 mb-10">
+              {profileData.publications.map((pub, i) => (
+                <motion.div
+                  key={i}
+                  variants={fadeUp}
+                  custom={i}
+                  className="glass-card rounded-xl p-6 hover:border-cyan-500/20 transition-colors"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1">
+                      <h3 className="text-white font-bold mb-2">{pub.title}</h3>
+                      <p className="text-slate-400 text-sm mb-3">
+                        {pub.authors.map((a, j) => (
+                          <span key={j}>
+                            {a.includes('Hossain') ? (
+                              <strong className="text-cyan-400">{a}</strong>
+                            ) : a}
+                            {j < pub.authors.length - 1 ? ', ' : ''}
+                          </span>
+                        ))}
+                      </p>
+                      <div className="flex items-center gap-3">
+                        <span className="px-2.5 py-0.5 text-xs rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                          {pub.venue}
+                        </span>
+                        <span className="text-slate-500 text-sm">{pub.date}</span>
+                      </div>
+                    </div>
+                    {pub.link && (
+                      <a
+                        href={pub.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="shrink-0 w-9 h-9 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 hover:bg-blue-500/20 transition-colors"
                       >
-                        {tag}
+                        <FaExternalLinkAlt className="w-3.5 h-3.5" />
+                      </a>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {profileData.preprints.length > 0 && (
+              <div>
+                <h3 className="text-lg font-semibold text-slate-300 mb-4">Preprints / Under Review</h3>
+                {profileData.preprints.map((pre, i) => (
+                  <motion.div
+                    key={i}
+                    variants={fadeUp}
+                    className="glass-card rounded-xl p-6 border-dashed hover:border-violet-500/20 transition-colors"
+                  >
+                    <h4 className="text-white font-bold mb-2">{pre.title}</h4>
+                    <p className="text-slate-400 text-sm mb-2">
+                      {pre.authors.map((a, j) => (
+                        <span key={j}>
+                          {a.includes('Hossain') ? (
+                            <strong className="text-cyan-400">{a}</strong>
+                          ) : a}
+                          {j < pre.authors.length - 1 ? ', ' : ''}
+                        </span>
+                      ))}
+                    </p>
+                    <span className="px-2.5 py-0.5 text-xs rounded-full bg-violet-500/10 text-violet-400 border border-violet-500/20">
+                      {pre.status}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
+            )}
+
+            {profileData.socialLinks.scholar && (
+              <motion.div variants={fadeUp} className="mt-8 text-center">
+                <a
+                  href={profileData.socialLinks.scholar}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-cyan-400 transition-colors"
+                >
+                  <SiGooglescholar className="w-4 h-4" />
+                  View full profile on Google Scholar
+                </a>
+              </motion.div>
+            )}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ─── PROJECTS ─── */}
+      <section id="projects" ref={projRef} className="w-full py-24 relative overflow-hidden">
+        <MathBoardBackdrop variant="light" />
+        <div className="container mx-auto px-6 max-w-5xl relative z-10">
+          <motion.div
+            initial="hidden"
+            animate={showProj ? "visible" : "hidden"}
+            variants={stagger}
+          >
+            <SectionHeading title="Projects" subtitle="Research and engineering work" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {profileData.projects.map((project, i) => {
+                const hash = project.title.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+                const hue1 = hash % 360;
+                const hue2 = (hue1 + 50) % 360;
+                return (
+                  <motion.div
+                    key={i}
+                    variants={fadeUp}
+                    custom={i}
+                    className="glass-card rounded-xl overflow-hidden hover:border-cyan-500/20 transition-all group"
+                  >
+                    <div
+                      className="h-32 flex items-center justify-center relative"
+                      style={{ background: `linear-gradient(135deg, hsl(${hue1}, 50%, 25%), hsl(${hue2}, 50%, 18%))` }}
+                    >
+                      <div className="absolute inset-0 grid-pattern opacity-30" />
+                      <span className="text-xs font-mono text-white/60 absolute top-3 right-3">{project.period}</span>
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-white font-bold mb-2 group-hover:text-cyan-400 transition-colors">
+                        {project.title}
+                      </h3>
+                      <p className="text-slate-400 text-sm mb-4 line-clamp-3">{project.description}</p>
+                      <div className="flex flex-wrap gap-1.5 mb-4">
+                        {project.technologies.slice(0, 5).map((t, j) => (
+                          <span key={j} className="px-2 py-0.5 text-xs rounded-full bg-slate-800 text-cyan-400 border border-slate-700">
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                      {project.link && (
+                        <a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-cyan-400 transition-colors"
+                        >
+                          <FaGithub className="w-3.5 h-3.5" />
+                          View on GitHub
+                        </a>
+                      )}
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+            <motion.div variants={fadeUp} className="mt-10 text-center">
+              <Link
+                href="/projects"
+                className="inline-flex items-center gap-2 px-6 py-3 border border-slate-700 text-slate-300 rounded-lg hover:border-cyan-500/50 hover:text-cyan-400 transition-all"
+              >
+                View All Projects
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ─── SKILLS ─── */}
+      <section id="skills" ref={skillsRef} className="w-full py-24 relative overflow-hidden bg-[#0d1321]">
+        <MathBoardBackdrop variant="dark" />
+        <div className="container mx-auto px-6 max-w-5xl relative z-10">
+          <motion.div
+            initial="hidden"
+            animate={showSkills ? "visible" : "hidden"}
+            variants={stagger}
+          >
+            <SectionHeading title="Skills & Tools" subtitle="Technologies I work with" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {profileData.skillCategories.map((cat, i) => (
+                <motion.div
+                  key={i}
+                  variants={fadeUp}
+                  custom={i}
+                  className="glass-card rounded-xl p-6"
+                >
+                  <h3 className="text-cyan-400 font-semibold text-sm uppercase tracking-wider mb-4">{cat.category}</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {cat.items.map((skill, j) => (
+                      <span
+                        key={j}
+                        className="skill-tag px-3 py-1.5 text-sm rounded-lg bg-slate-800/80 text-slate-300 border border-slate-700 hover:border-cyan-500/30 hover:text-cyan-400"
+                      >
+                        {skill}
                       </span>
                     ))}
                   </div>
-                  <Link href={project.link}>
-                    <div className="group inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-300">
-                      Learn More
-                      <svg 
-                        className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" 
-                        fill="none" 
-                        stroke="currentColor" 
-                        viewBox="0 0 24 24"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                      </svg>
-                    </div>
-                  </Link>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          
-          {/* View all projects button */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isProjectsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.5, delay: 0.8 }}
-            className="mt-16 text-center"
-          >
-            <Link href="/projects">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="inline-flex items-center px-8 py-4 bg-transparent border-2 border-blue-600 text-blue-600 dark:text-blue-400 font-semibold rounded-lg hover:bg-blue-600 hover:text-white transition-all duration-300"
-              >
-                View All Projects
-                <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </motion.div>
-            </Link>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
         </div>
-        
-        {/* Background decorative elements */}
-        <div className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-blue-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-0 transform translate-y-1/2 translate-x-1/2 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-3xl"></div>
       </section>
 
-      {/* Skills Section with Grid Animation */}
-      <section 
-        id="skills" 
-        ref={skillsRef}
-        className="w-full py-24 bg-white dark:bg-gray-800 overflow-hidden relative"
-      >
-        <div className="container mx-auto px-6 relative z-10">
+      {/* ─── AWARDS & CERTIFICATIONS ─── */}
+      <section id="awards" ref={awardsRef} className="w-full py-24 relative overflow-hidden">
+        <MathBoardBackdrop variant="light" />
+        <div className="container mx-auto px-6 max-w-5xl relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isSkillsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-20"
+            initial="hidden"
+            animate={showAwards ? "visible" : "hidden"}
+            variants={stagger}
           >
-            <motion.h2 
-              initial={{ opacity: 0 }}
-              animate={isSkillsInView ? { opacity: 1 } : { opacity: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-4xl font-bold text-gray-900 dark:text-white mb-4"
-            >
-              My Expertise
-            </motion.h2>
-            <motion.p 
-              initial={{ opacity: 0 }}
-              animate={isSkillsInView ? { opacity: 1 } : { opacity: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto"
-            >
-              Technologies and tools I specialize in
-            </motion.p>
-          </motion.div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 md:gap-10">
-            {skills?.map((skill, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                animate={isSkillsInView ? 
-                  { opacity: 1, scale: 1, y: 0, transition: { duration: 0.4, delay: 0.1 * index } } : 
-                  { opacity: 0, scale: 0.8, y: 20 }
-                }
-                whileHover={{ 
-                  y: -10, 
-                  boxShadow: "0 15px 30px -10px rgba(59, 130, 246, 0.3)",
-                  transition: { duration: 0.2 }
-                }}
-                className="flex flex-col items-center bg-gray-50 dark:bg-gray-700 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300"
-              >
-                <div className="w-16 h-16 flex items-center justify-center bg-blue-100 dark:bg-blue-900/30 rounded-full mb-4">
-                  {getSkillIcon(skill)}
+            <SectionHeading title="Awards & Certifications" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              {/* Awards */}
+              <div>
+                <h3 className="flex items-center gap-2 text-lg font-semibold text-white mb-6">
+                  <FaAward className="text-amber-400" />
+                  Awards & Scholarships
+                </h3>
+                <div className="space-y-4">
+                  {profileData.awards.map((award, i) => (
+                    <motion.div
+                      key={i}
+                      variants={fadeUp}
+                      custom={i}
+                      className="glass-card rounded-lg p-4 hover:border-amber-500/20 transition-colors"
+                    >
+                      <h4 className="text-white font-medium text-sm">{award.title}</h4>
+                      <div className="flex items-center justify-between mt-1">
+                        <span className="text-slate-500 text-xs">{award.issuer}</span>
+                        <span className="text-amber-400/70 text-xs font-mono">{award.date}</span>
+                      </div>
+                      {award.description && (
+                        <p className="text-slate-400 text-xs mt-1">{award.description}</p>
+                      )}
+                    </motion.div>
+                  ))}
                 </div>
-                <h3 className="text-gray-900 dark:text-white font-medium text-center">{skill}</h3>
-              </motion.div>
-            ))}
-          </div>
+              </div>
+
+              {/* Certifications */}
+              <div>
+                <h3 className="flex items-center gap-2 text-lg font-semibold text-white mb-6">
+                  <FaCertificate className="text-emerald-400" />
+                  Certifications
+                </h3>
+                <div className="space-y-4">
+                  {profileData.certifications.map((cert, i) => (
+                    <motion.div
+                      key={i}
+                      variants={fadeUp}
+                      custom={i}
+                      className="glass-card rounded-lg p-4 hover:border-emerald-500/20 transition-colors"
+                    >
+                      <h4 className="text-white font-medium text-sm">{cert.title}</h4>
+                      <div className="flex items-center justify-between mt-1">
+                        <span className="text-slate-500 text-xs">{cert.issuer}</span>
+                        <span className="text-emerald-400/70 text-xs font-mono">{cert.date}</span>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
-        
-        {/* Background decorative patterns */}
-        <div className="absolute inset-0 z-0">
-          <div className="absolute w-full h-full opacity-[0.03] dark:opacity-[0.05] bg-[radial-gradient(#3b82f6_1px,transparent_1px)] bg-[length:20px_20px]"></div>
-    </div>
       </section>
 
-      <Footer profile={profileData} />
+      <Footer />
     </main>
   );
 }
