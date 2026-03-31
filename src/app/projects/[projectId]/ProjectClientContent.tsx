@@ -6,15 +6,15 @@ import TabNavigation from '../../components/TabNavigation';
 import Footer from '../../components/Footer';
 import { FaGithub, FaArrowLeft } from 'react-icons/fa';
 import { Project } from '../../types/profile';
+import { usePreferLightMotion } from '../../hooks/usePreferLightMotion';
 
 interface ProjectClientContentProps {
   project: Project;
 }
 
 export default function ProjectClientContent({ project }: ProjectClientContentProps) {
-  const hash = project.title.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const hue1 = hash % 360;
-  const hue2 = (hue1 + 50) % 360;
+  const lightMotion = usePreferLightMotion();
+  const t = lightMotion ? { duration: 0.25 } : { duration: 0.6 };
 
   return (
     <main className="flex min-h-screen flex-col items-center bg-[#0a0f1a]">
@@ -22,11 +22,9 @@ export default function ProjectClientContent({ project }: ProjectClientContentPr
 
       {/* Header */}
       <section className="w-full pt-32 pb-16 relative overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-30"
-          style={{ background: `linear-gradient(135deg, hsl(${hue1}, 50%, 15%), hsl(${hue2}, 50%, 10%))` }}
-        />
-        <div className="absolute inset-0 dot-pattern opacity-20" />
+        <div className="absolute inset-0 bg-slate-950/90" />
+        <div className="absolute inset-0 dot-pattern opacity-25" />
+        <div className="absolute top-0 right-1/4 w-[min(100%,400px)] h-[400px] rounded-full bg-cyan-500/5 blur-[120px]" />
 
         <div className="container mx-auto px-6 max-w-4xl relative z-10">
           <Link
@@ -40,7 +38,7 @@ export default function ProjectClientContent({ project }: ProjectClientContentPr
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={t}
           >
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">{project.title}</h1>
             <p className="text-slate-400 text-lg mb-6">{project.description}</p>
@@ -68,7 +66,7 @@ export default function ProjectClientContent({ project }: ProjectClientContentPr
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ ...t, delay: lightMotion ? 0.05 : 0.2 }}
             className="glass-card rounded-xl p-6"
           >
             <h2 className="text-lg font-semibold text-white mb-4">Technologies</h2>

@@ -1,23 +1,31 @@
 'use client';
 
 import Link from 'next/link';
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { profileData } from '../data/profile';
 import { useHasMounted } from '../hooks/useHasMounted';
+import { usePreferLightMotion } from '../hooks/usePreferLightMotion';
 import { FaGithub, FaLinkedin, FaGlobe, FaMapMarkerAlt, FaFacebook, FaInstagram } from 'react-icons/fa';
 import { SiGooglescholar } from 'react-icons/si';
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
-};
-
 export default function Footer() {
   const mounted = useHasMounted();
+  const lightMotion = usePreferLightMotion();
+  const itemVariants = useMemo(
+    () => ({
+      hidden: { opacity: 0, y: lightMotion ? 12 : 20 },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: lightMotion ? 0.2 : 0.5 }
+      }
+    }),
+    [lightMotion]
+  );
   const footerRef = useRef(null);
   const footerInView = useInView(footerRef, { once: true, amount: 0.1 });
-  const showFooter = mounted && footerInView;
+  const showFooter = mounted && (lightMotion || footerInView);
 
   return (
     <motion.footer
@@ -26,7 +34,7 @@ export default function Footer() {
       animate={showFooter ? "visible" : "hidden"}
       variants={{
         hidden: {},
-        visible: { transition: { staggerChildren: 0.1 } }
+        visible: { transition: { staggerChildren: lightMotion ? 0 : 0.1 } }
       }}
       className="w-full bg-[#060a14] text-white py-16 relative overflow-hidden"
     >

@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import React, { useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useHasMounted } from './hooks/useHasMounted';
+import { usePreferLightMotion } from './hooks/usePreferLightMotion';
 import TabNavigation from './components/TabNavigation';
 import Footer from './components/Footer';
 import { profileData } from './data/profile';
@@ -13,19 +14,6 @@ import {
 } from 'react-icons/fa';
 import { SiGooglescholar } from 'react-icons/si';
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, delay: i * 0.1 }
-  })
-};
-
-const stagger = {
-  visible: { transition: { staggerChildren: 0.08 } }
-};
-
 /** Math / CS research aesthetic — Unsplash (Dan Cristian Pădureț) */
 const MATH_BOARD_BG = '/images/hero-tech-2.jpg';
 
@@ -33,8 +21,9 @@ function MathBoardBackdrop({ variant }: { variant: 'hero' | 'light' | 'dark' }) 
   if (variant === 'hero') {
     return (
       <>
+        {/* Photo skipped on mobile — smaller decode + less overdraw */}
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 hidden md:block bg-cover bg-center"
           style={{ backgroundImage: `url(${MATH_BOARD_BG})` }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f1a]/92 via-[#0a0f1a]/82 to-[#0a0f1a]/92" />
@@ -46,7 +35,7 @@ function MathBoardBackdrop({ variant }: { variant: 'hero' | 'light' | 'dark' }) 
   return (
     <>
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-[0.2]"
+        className="absolute inset-0 hidden md:block bg-cover bg-center opacity-[0.2]"
         style={{ backgroundImage: `url(${MATH_BOARD_BG})` }}
       />
       <div className={`absolute inset-0 ${tint}`} />
@@ -70,6 +59,7 @@ function SectionHeading({ title, subtitle }: { title: string; subtitle?: string 
 
 export default function Home() {
   const mounted = useHasMounted();
+  const lightMotion = usePreferLightMotion();
   const aboutRef = useRef(null);
   const expRef = useRef(null);
   const eduRef = useRef(null);
@@ -86,13 +76,36 @@ export default function Home() {
   const isSkillsInView = useInView(skillsRef, { once: true, amount: 0.2 });
   const isAwardsInView = useInView(awardsRef, { once: true, amount: 0.2 });
 
-  const showAbout = mounted && isAboutInView;
-  const showExp = mounted && isExpInView;
-  const showEdu = mounted && isEduInView;
-  const showPub = mounted && isPubInView;
-  const showProj = mounted && isProjInView;
-  const showSkills = mounted && isSkillsInView;
-  const showAwards = mounted && isAwardsInView;
+  /* Narrow / reduced-motion: reveal all at once after mount — avoids many scroll observers + repaints */
+  const showAbout = mounted && (lightMotion || isAboutInView);
+  const showExp = mounted && (lightMotion || isExpInView);
+  const showEdu = mounted && (lightMotion || isEduInView);
+  const showPub = mounted && (lightMotion || isPubInView);
+  const showProj = mounted && (lightMotion || isProjInView);
+  const showSkills = mounted && (lightMotion || isSkillsInView);
+  const showAwards = mounted && (lightMotion || isAwardsInView);
+
+  const fadeUp = useMemo(
+    () => ({
+      hidden: { opacity: 0, y: lightMotion ? 12 : 30 },
+      visible: (i: number = 0) => ({
+        opacity: 1,
+        y: 0,
+        transition: {
+          duration: lightMotion ? 0.2 : 0.5,
+          delay: lightMotion ? 0 : i * 0.1
+        }
+      })
+    }),
+    [lightMotion]
+  );
+
+  const staggerVariants = useMemo(
+    () => ({
+      visible: { transition: { staggerChildren: lightMotion ? 0 : 0.08 } }
+    }),
+    [lightMotion]
+  );
 
   return (
     <main className="relative flex min-h-screen flex-col items-center overflow-hidden bg-[#0a0f1a]">
@@ -211,7 +224,7 @@ export default function Home() {
           <motion.div
             initial="hidden"
             animate={showAbout ? "visible" : "hidden"}
-            variants={stagger}
+            variants={staggerVariants}
           >
             <SectionHeading title="About Me" />
             <motion.div variants={fadeUp} className="glass-card rounded-2xl p-8 md:p-10">
@@ -240,7 +253,7 @@ export default function Home() {
           <motion.div
             initial="hidden"
             animate={showExp ? "visible" : "hidden"}
-            variants={stagger}
+            variants={staggerVariants}
           >
             <SectionHeading title="Experience" subtitle="Professional and academic roles" />
             <div className="relative pl-10">
@@ -284,7 +297,7 @@ export default function Home() {
           <motion.div
             initial="hidden"
             animate={showEdu ? "visible" : "hidden"}
-            variants={stagger}
+            variants={staggerVariants}
           >
             <SectionHeading title="Education" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -343,7 +356,7 @@ export default function Home() {
           <motion.div
             initial="hidden"
             animate={showPub ? "visible" : "hidden"}
-            variants={stagger}
+            variants={staggerVariants}
           >
             <SectionHeading title="Publications & Research" subtitle="Peer-reviewed papers and ongoing work" />
 
@@ -442,55 +455,44 @@ export default function Home() {
           <motion.div
             initial="hidden"
             animate={showProj ? "visible" : "hidden"}
-            variants={stagger}
+            variants={staggerVariants}
           >
             <SectionHeading title="Projects" subtitle="Research and engineering work" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {profileData.projects.map((project, i) => {
-                const hash = project.title.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-                const hue1 = hash % 360;
-                const hue2 = (hue1 + 50) % 360;
-                return (
-                  <motion.div
-                    key={i}
-                    variants={fadeUp}
-                    custom={i}
-                    className="glass-card rounded-xl overflow-hidden hover:border-cyan-500/20 transition-all group"
-                  >
-                    <div
-                      className="h-32 flex items-center justify-center relative"
-                      style={{ background: `linear-gradient(135deg, hsl(${hue1}, 50%, 25%), hsl(${hue2}, 50%, 18%))` }}
+              {profileData.projects.map((project, i) => (
+                <motion.div
+                  key={i}
+                  variants={fadeUp}
+                  custom={i}
+                  className="glass-card rounded-xl p-6 hover:border-cyan-500/20 transition-colors group"
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
+                    <h3 className="text-white font-bold text-base leading-snug group-hover:text-cyan-400 transition-colors">
+                      {project.title}
+                    </h3>
+                    <span className="text-xs font-mono text-cyan-400/80 shrink-0">{project.period}</span>
+                  </div>
+                  <p className="text-slate-400 text-sm mb-4 line-clamp-3">{project.description}</p>
+                  <div className="flex flex-wrap gap-1.5 mb-4">
+                    {project.technologies.slice(0, 5).map((t, j) => (
+                      <span key={j} className="px-2 py-0.5 text-xs rounded-full bg-slate-800 text-cyan-400 border border-slate-700">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                  {project.link && (
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-cyan-400 transition-colors"
                     >
-                      <div className="absolute inset-0 grid-pattern opacity-30" />
-                      <span className="text-xs font-mono text-white/60 absolute top-3 right-3">{project.period}</span>
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-white font-bold mb-2 group-hover:text-cyan-400 transition-colors">
-                        {project.title}
-                      </h3>
-                      <p className="text-slate-400 text-sm mb-4 line-clamp-3">{project.description}</p>
-                      <div className="flex flex-wrap gap-1.5 mb-4">
-                        {project.technologies.slice(0, 5).map((t, j) => (
-                          <span key={j} className="px-2 py-0.5 text-xs rounded-full bg-slate-800 text-cyan-400 border border-slate-700">
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-                      {project.link && (
-                        <a
-                          href={project.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-cyan-400 transition-colors"
-                        >
-                          <FaGithub className="w-3.5 h-3.5" />
-                          View on GitHub
-                        </a>
-                      )}
-                    </div>
-                  </motion.div>
-                );
-              })}
+                      <FaGithub className="w-3.5 h-3.5" />
+                      View on GitHub
+                    </a>
+                  )}
+                </motion.div>
+              ))}
             </div>
             <motion.div variants={fadeUp} className="mt-10 text-center">
               <Link
@@ -514,7 +516,7 @@ export default function Home() {
           <motion.div
             initial="hidden"
             animate={showSkills ? "visible" : "hidden"}
-            variants={stagger}
+            variants={staggerVariants}
           >
             <SectionHeading title="Skills & Tools" subtitle="Technologies I work with" />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -550,7 +552,7 @@ export default function Home() {
           <motion.div
             initial="hidden"
             animate={showAwards ? "visible" : "hidden"}
-            variants={stagger}
+            variants={staggerVariants}
           >
             <SectionHeading title="Awards & Certifications" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
